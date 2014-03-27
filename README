@@ -1,0 +1,2 @@
+Perl client for talking to Artifactory REST API.
+Primary usage is to upload artifacts with properties / content onto Artifactory.
