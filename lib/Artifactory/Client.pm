@@ -14,13 +14,15 @@ Artifactory::Client - Perl client for Artifactory REST API
 
 =head1 VERSION
 
-Version 0.0.11
+Version 0.0.12
 
 =cut
 
-our $VERSION = '0.0.11';
+our $VERSION = '0.0.12';
 
 =head1 SYNOPSIS
+
+    This is a Perl client for Artifactory REST API: https://www.jfrog.com/confluence/display/RTF/Artifactory+REST+API
 
     use Artifactory::Client;
     
@@ -32,21 +34,34 @@ our $VERSION = '0.0.11';
     };
 
     my $client = Artifactory::Client->new( $args );
-
     my $path = '/foo'; # path on artifactory
+    
+    # Properties are key-multi-value pairs.  Values must be an arrayref even for a single element.
     my $properties = {
-        one => 'two',
-        baz => 'three',
+        one => ['two'],
+        baz => ['three'],
     };
     my $content = "content of artifact";
-   
-    # Name of methods are taken straight from Artifactory REST API documentation.
-    # 'Deploy Artifact' became deploy_artifact method, like below.  The caller gets
-    # HTTP::Response object back.
+
+    # Name of methods are taken straight from Artifactory REST API documentation.  'Deploy Artifact' would map to
+    # deploy_artifact method, like below.  The caller gets HTTP::Response object back.
     my $resp = $client->deploy_artifact( path => $path, properties => $properties, content => $content );
 
     # Custom requests can also be made via usual get / post / put / delete requests.
     my $resp = $client->get( 'http://artifactory.server.com/path/to/resource' );
+
+    Note on testing:
+    This module was developed using Test-Driven Development.  Due to the nature of talking to 3rd-party API, I wrote
+    functional tests first.  Because the tests contain proprietary information for my employer, I am not allowed to
+    distribute them on CPAN.  When I get a chance I should mock the functional tests into unit tests.  Meanwhile here is
+    the coverage information from the functional tests:
+    ----------------------------------- ------ ------ ------ ------ ------ ------
+    File                                  stmt   bran   cond    sub   time  total
+    ----------------------------------- ------ ------ ------ ------ ------ ------
+    lib/Artifactory/Client.pm             94.3   80.0    n/a   88.9   30.4   91.8
+    01_client.t                          100.0    n/a    n/a  100.0   69.6  100.0
+    Total                                 97.7   80.0    n/a   94.6  100.0   96.4
+    ----------------------------------- ------ ------ ------ ------ ------ ------
 
 =cut
 
@@ -85,8 +100,8 @@ sub _build_ua {
 
 =head2 get
 
-    invokes GET request on LWP::UserAgent-like object; params are passed through.
-    returns HTTP::Response object.
+    Invokes GET request on LWP::UserAgent-like object; params are passed through.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -97,8 +112,8 @@ sub get {
 
 =head2 post
 
-    invokes POST request on LWP::UserAgent-like object; params are passed through.
-    returns HTTP::Response object.
+    Invokes POST request on LWP::UserAgent-like object; params are passed through.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -109,8 +124,8 @@ sub post {
 
 =head2 put
 
-    invokes PUT request on LWP::UserAgent-like object; params are passed through.
-    returns HTTP::Response object.
+    Invokes PUT request on LWP::UserAgent-like object; params are passed through.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -121,8 +136,8 @@ sub put {
 
 =head2 delete
 
-    invokes DELETE request on LWP::UserAgent-like object; params are passed through.
-    returns HTTP::Response object.
+    Invokes DELETE request on LWP::UserAgent-like object; params are passed through.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -138,8 +153,9 @@ sub _request {
 
 =head2 deploy_artifact
 
-    takes hash of path, properties and content then deploys artifact as specified in
-    Deploy Artifact section of Artifactory REST API documentation.
+    Takes hash of path, properties and content then deploys artifact as specified in Deploy Artifact section of
+    Artifactory REST API documentation.  Note that properties are key-multi-value pairs where the value is an arrayref.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -158,8 +174,9 @@ sub deploy_artifact {
 
 =head2 set_item_properties
 
-    takes hash of path and properties then set item properties as specified in
-    Set Item Properties section of Artifactory REST API documentation.
+    Takes hash of path and properties then set item properties as specified in Set Item Properties section of
+    Artifactory REST API documentation.  Note that properties are key-multi-value pairs where the value is an arrayref.
+    Returns HTTP::Response object.
 
 =cut
 
@@ -192,15 +209,7 @@ sub _attach_properties {
     my $matrix = $args{ matrix };
 
     for my $key ( keys %{ $properties } ) {
-        my $val = ( defined $properties->{$key} ) ? $properties->{ $key } : '';
-
-        if ( ref( $val ) eq 'ARRAY' ) {
-            $url .= $self->_handle_prop_multivalue( $key, $val, $matrix );
-        }
-        else {
-            $val = uri_escape( $val );
-            $url .= ( $matrix ) ? "$key=$val;" : "$key=$val|";
-        }
+        $url .= $self->_handle_prop_multivalue( $key, $properties->{ $key }, $matrix );
     }
     return $url;
 }
@@ -214,6 +223,7 @@ sub _handle_prop_multivalue {
     my $str = ( $matrix ) ? '' : "$key=";
 
     for my $val ( @{ $values } ) {
+        $val = '' if ( !defined $val );
         $val = uri_escape( $val );
         $str .= ( $matrix ) ? "$key=$val;" : "$val,";
     }

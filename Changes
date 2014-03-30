@@ -1,5 +1,8 @@
 Revision history for Artifactory-Client
 
+Version 0.0.12
+- Required properties to be key => [value] pairs to conform with Artifactory handling of properties
+
 Version 0.0.11
 - Handling matrix parameters vs non-matrix parameters to deal with inconsistent REST API
 
