@@ -14,11 +14,11 @@ Artifactory::Client - Perl client for Artifactory REST API
 
 =head1 VERSION
 
-Version 0.0.12
+Version 0.0.15
 
 =cut
 
-our $VERSION = '0.0.12';
+our $VERSION = '0.0.15';
 
 =head1 SYNOPSIS
 
@@ -36,7 +36,8 @@ our $VERSION = '0.0.12';
     my $client = Artifactory::Client->new( $args );
     my $path = '/foo'; # path on artifactory
     
-    # Properties are key-multi-value pairs.  Values must be an arrayref even for a single element.
+    # Properties are a hashref of key-arrayref pairs.  Note that value must be an arrayref even for a single element.
+    # This is to conform with Artifactory which treats property values as a list.
     my $properties = {
         one => ['two'],
         baz => ['three'],
@@ -49,19 +50,6 @@ our $VERSION = '0.0.12';
 
     # Custom requests can also be made via usual get / post / put / delete requests.
     my $resp = $client->get( 'http://artifactory.server.com/path/to/resource' );
-
-    Note on testing:
-    This module was developed using Test-Driven Development.  Due to the nature of talking to 3rd-party API, I wrote
-    functional tests first.  Because the tests contain proprietary information for my employer, I am not allowed to
-    distribute them on CPAN.  When I get a chance I should mock the functional tests into unit tests.  Meanwhile here is
-    the coverage information from the functional tests:
-    ----------------------------------- ------ ------ ------ ------ ------ ------
-    File                                  stmt   bran   cond    sub   time  total
-    ----------------------------------- ------ ------ ------ ------ ------ ------
-    lib/Artifactory/Client.pm             94.3   80.0    n/a   88.9   30.4   91.8
-    01_client.t                          100.0    n/a    n/a  100.0   69.6  100.0
-    Total                                 97.7   80.0    n/a   94.6  100.0   96.4
-    ----------------------------------- ------ ------ ------ ------ ------ ------
 
 =cut
 
@@ -151,10 +139,11 @@ sub _request {
     return $self->{ ua }->$method( @args );
 }
 
-=head2 deploy_artifact
+=head2 deploy_artifact( path => $path, properties => $properties, content => $content )
 
     Takes hash of path, properties and content then deploys artifact as specified in Deploy Artifact section of
-    Artifactory REST API documentation.  Note that properties are key-multi-value pairs where the value is an arrayref.
+    Artifactory REST API documentation.  Note that properties are a hashref with key-arrayref pairs, such as:
+    $prop = { key1 => ['a'], key2 => ['a', 'b'] }
     Returns HTTP::Response object.
 
 =cut
@@ -172,10 +161,14 @@ sub deploy_artifact {
     return $self->put( $request, content => $content );
 }
 
-=head2 set_item_properties
+=head2 set_item_properties( path => $path, properties => $properties, recursive => [0|1] )
 
     Takes hash of path and properties then set item properties as specified in Set Item Properties section of
-    Artifactory REST API documentation.  Note that properties are key-multi-value pairs where the value is an arrayref.
+    Artifactory REST API documentation.  Supply recursive => 0 if you want to suppress propagation of properties
+    downstream.
+
+    Note that properties are a hashref with key-arrayref pairs, such as:
+    $prop = { key1 => ['a'], key2 => ['a', 'b'] }
     Returns HTTP::Response object.
 
 =cut
@@ -186,9 +179,10 @@ sub set_item_properties {
 
     my $path = $args{ path };
     my $properties = $args{ properties };
+    my $recursive = $args{ recursive };
     my $url = "$artifactory:$port/api/storage/$repository$path?properties=";
     my $request = $self->_attach_properties( url => $url, properties => $properties );
-
+    $request .= "&recursive=$recursive" if ( defined $recursive );
     return $self->put( $request );
 }
 

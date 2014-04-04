@@ -36,7 +36,7 @@
    "provides" : {
       "Artifactory::Client" : {
          "file" : "lib/Artifactory/Client.pm",
-         "version" : "v0.0.12"
+         "version" : "v0.0.15"
       }
    },
    "release_status" : "stable",
@@ -45,5 +45,5 @@
          "http://www.perlfoundation.org/artistic_license_2_0"
       ]
    },
-   "version" : "v0.0.12"
+   "version" : "v0.0.15"
 }

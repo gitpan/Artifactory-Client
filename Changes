@@ -1,5 +1,14 @@
 Revision history for Artifactory-Client
 
+Version 0.0.15
+- Added unit tests
+
+Version 0.0.14
+- Added recursive flag on set_item_properties if user doesn't want the default recursive behavior
+
+Version 0.0.13
+- Updating POD to be more descriptive on property requirements
+
 Version 0.0.12
 - Required properties to be key => [value] pairs to conform with Artifactory handling of properties
 
