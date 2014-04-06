@@ -12,6 +12,7 @@ WriteMakefile
                    'namespace::autoclean' => 0,
                    'LWP::UserAgent' => 0,
                    'URI::Escape' => 0,
+                   'JSON' => 0,
                    'Moose' => '2.0604'
                  }
 )

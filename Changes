@@ -1,5 +1,8 @@
 Revision history for Artifactory-Client
 
+Version 0.0.16
+- Adding JSON as prereq for build_requires
+
 Version 0.0.15
 - Added unit tests
 

@@ -13,6 +13,7 @@ my $builder = Module::Build->new(
     },
     build_requires => {
         'Test::More' => 0,
+        'JSON' => 0,
     },
     requires => {
         'Moose'                 => 2.0604,
