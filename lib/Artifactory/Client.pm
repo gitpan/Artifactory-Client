@@ -14,15 +14,15 @@ Artifactory::Client - Perl client for Artifactory REST API
 
 =head1 VERSION
 
-Version 0.0.16
+Version 0.0.17
 
 =cut
 
-our $VERSION = '0.0.16';
+our $VERSION = '0.0.17';
 
 =head1 SYNOPSIS
 
-    This is a Perl client for Artifactory REST API: https://www.jfrog.com/confluence/display/RTF/Artifactory+REST+API
+This is a Perl client for Artifactory REST API: https://www.jfrog.com/confluence/display/RTF/Artifactory+REST+API
 
     use Artifactory::Client;
     
@@ -30,7 +30,7 @@ our $VERSION = '0.0.16';
         artifactory => 'http://artifactory.server.com',
         port => 8080,
         repository => 'myrepository',
-        ua => LWP::UserAgent->new() # LWP::UserAgent-like object is pluggable
+        ua => LWP::UserAgent->new() # LWP::UserAgent-like object is pluggable.  Default is LWP::UserAgent.
     };
 
     my $client = Artifactory::Client->new( $args );
@@ -88,8 +88,8 @@ sub _build_ua {
 
 =head2 get
 
-    Invokes GET request on LWP::UserAgent-like object; params are passed through.
-    Returns HTTP::Response object.
+Invokes GET request on LWP::UserAgent-like object; params are passed through.
+Returns HTTP::Response object.
 
 =cut
 
@@ -100,8 +100,8 @@ sub get {
 
 =head2 post
 
-    Invokes POST request on LWP::UserAgent-like object; params are passed through.
-    Returns HTTP::Response object.
+nvokes POST request on LWP::UserAgent-like object; params are passed through.
+Returns HTTP::Response object.
 
 =cut
 
@@ -112,8 +112,8 @@ sub post {
 
 =head2 put
 
-    Invokes PUT request on LWP::UserAgent-like object; params are passed through.
-    Returns HTTP::Response object.
+Invokes PUT request on LWP::UserAgent-like object; params are passed through.
+Returns HTTP::Response object.
 
 =cut
 
@@ -124,8 +124,8 @@ sub put {
 
 =head2 delete
 
-    Invokes DELETE request on LWP::UserAgent-like object; params are passed through.
-    Returns HTTP::Response object.
+Invokes DELETE request on LWP::UserAgent-like object; params are passed through.
+Returns HTTP::Response object.
 
 =cut
 
@@ -141,10 +141,12 @@ sub _request {
 
 =head2 deploy_artifact( path => $path, properties => $properties, content => $content )
 
-    Takes hash of path, properties and content then deploys artifact as specified in Deploy Artifact section of
-    Artifactory REST API documentation.  Note that properties are a hashref with key-arrayref pairs, such as:
+Takes hash of path, properties and content then deploys artifact as specified in Deploy Artifact section of Artifactory
+REST API documentation.  Note that properties are a hashref with key-arrayref pairs, such as:
+
     $prop = { key1 => ['a'], key2 => ['a', 'b'] }
-    Returns HTTP::Response object.
+
+Returns HTTP::Response object.
 
 =cut
 
@@ -163,13 +165,13 @@ sub deploy_artifact {
 
 =head2 set_item_properties( path => $path, properties => $properties, recursive => [0|1] )
 
-    Takes hash of path and properties then set item properties as specified in Set Item Properties section of
-    Artifactory REST API documentation.  Supply recursive => 0 if you want to suppress propagation of properties
-    downstream.
+Takes hash of path and properties then set item properties as specified in Set Item Properties section of Artifactory
+REST API documentation.  Supply recursive => 0 if you want to suppress propagation of properties downstream.  Note that
+properties are a hashref with key-arrayref pairs, such as:
 
-    Note that properties are a hashref with key-arrayref pairs, such as:
     $prop = { key1 => ['a'], key2 => ['a', 'b'] }
-    Returns HTTP::Response object.
+
+Returns HTTP::Response object.
 
 =cut
 
