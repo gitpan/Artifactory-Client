@@ -89,6 +89,29 @@ subtest 'set_item_properties on non-existing artifact', sub {
     is( $resp->code, 404, 'got 404 for attempting to set props on non-existent artifact' );
 };
 
+subtest 'deploy artifact by checksum', sub {
+    my $client = setup();
+    my $path = '/unique_path';
+    my $sha1 = 'da39a3ee5e6b4b0d3255bfef95601890afd80709'; # sha-1 of 0 byte file
+
+    no strict 'refs';
+    no warnings 'redefine';
+    local *{ 'LWP::UserAgent::put' } = sub {
+        return bless( {
+            '_request' => bless( { 
+                '_headers' => bless( { 
+                    'x-checksum-sha1' => $sha1,
+                    'x-checksum-deploy' => 'true',
+                }, 'HTTP::Headers' ),
+            }, 'HTTP::Request' )
+        }, 'HTTP::Response' );
+    };
+
+    my $resp = $client->deploy_artifact_by_checksum( path => $path, sha1 => $sha1 );
+    is( $resp->request()->header( 'x-checksum-deploy' ), 'true', 'x-checksum-deploy set' );
+    is( $resp->request()->header( 'x-checksum-sha1' ), $sha1, 'x-checksum-sha1 set' );
+};
+
 done_testing();
 
 sub setup {

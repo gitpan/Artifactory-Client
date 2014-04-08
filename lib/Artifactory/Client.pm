@@ -14,11 +14,11 @@ Artifactory::Client - Perl client for Artifactory REST API
 
 =head1 VERSION
 
-Version 0.0.17
+Version 0.0.19
 
 =cut
 
-our $VERSION = '0.0.17';
+our $VERSION = '0.0.19';
 
 =head1 SYNOPSIS
 
@@ -66,7 +66,7 @@ has 'port' => (
 );
 
 has 'ua' => (
-    is => 'ro',
+    is => 'rw',
     isa => 'LWP::UserAgent',
     builder => '_build_ua'
 );
@@ -157,10 +157,34 @@ sub deploy_artifact {
     my $path = $args{ path };
     my $properties = $args{ properties };
     my $content = $args{ content };
+    my $header = $args{ header };
     my $url = "$artifactory:$port/artifactory/$repository$path;";
 
     my $request = $self->_attach_properties( url => $url, properties => $properties, matrix => 1 );
-    return $self->put( $request, content => $content );
+    return $self->put( $request, %{ $header }, content => $content );
+}
+
+=head2 deploy_artifact_by_checksum( path => $path, properties => $properties, content => $content, sha1 => $sha1 )
+
+Takes hash of path, properties, content and sha1 then deploys artifact as specified in Deploy Artifact by checksum
+section of Artifactory REST API documentation.  Note that properties are a hashref with key-arrayref pairs, such as:
+
+    $prop = { key1 => ['a'], key2 => ['a', 'b'] }
+
+Returns HTTP::Response object.
+
+=cut
+
+sub deploy_artifact_by_checksum {
+    my ( $self, %args ) = @_;
+
+    my $sha1 = $args{ sha1 };
+    my $header = {
+        'X-Checksum-Deploy' => 'true',
+        'X-Checksum-Sha1' => $sha1,
+    };
+    $args{ header } = $header;
+    return $self->deploy_artifact( %args );
 }
 
 =head2 set_item_properties( path => $path, properties => $properties, recursive => [0|1] )
