@@ -112,6 +112,33 @@ subtest 'deploy artifact by checksum', sub {
     is( $resp->request()->header( 'x-checksum-sha1' ), $sha1, 'x-checksum-sha1 set' );
 };
 
+subtest 'item properties', sub {
+    my $client = setup();
+    my $path = '/unique_path';
+    my $properties = {
+        this => ['here', 'there'],
+        that => ['one'],
+    };
+
+    no strict 'refs';
+    no warnings 'redefine';
+    local *{ 'LWP::UserAgent::get' } = sub {
+        return bless( {
+            '_content' => '{
+                "properties" : {
+                    "that" : [ "one" ]
+                }
+            }',
+            '_rc' => 200,
+            '_headers' => bless( {}, 'HTTP::Headers' ),
+        }, 'HTTP::Response' );
+    };
+
+    my $resp = $client->item_properties( path => $path, properties => ['that'] );
+    my $scalar = from_json( $resp->decoded_content );
+    is_deeply( $scalar->{ properties }, { that => ['one'] }, 'property content is correct' );
+};
+
 done_testing();
 
 sub setup {
