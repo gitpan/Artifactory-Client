@@ -17,7 +17,9 @@
       "build" : {
          "requires" : {
             "JSON" : "0",
-            "Test::More" : "0"
+            "LWP::UserAgent" : "0",
+            "Test::More" : "0",
+            "WWW::Mechanize" : "0"
          }
       },
       "configure" : {
@@ -37,7 +39,7 @@
    "provides" : {
       "Artifactory::Client" : {
          "file" : "lib/Artifactory/Client.pm",
-         "version" : "v0.1.9"
+         "version" : "v0.1.10"
       }
    },
    "release_status" : "stable",
@@ -46,5 +48,5 @@
          "http://www.perlfoundation.org/artistic_license_2_0"
       ]
    },
-   "version" : "v0.1.9"
+   "version" : "v0.1.10"
 }
