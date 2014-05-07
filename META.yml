@@ -19,12 +19,13 @@ name: Artifactory-Client
 provides:
   Artifactory::Client:
     file: lib/Artifactory/Client.pm
-    version: v0.1.10
+    version: v0.1.11
 requires:
+  File::Slurp: 0
   LWP::UserAgent: 0
   Moose: 2.0604
   URI::Escape: 0
   namespace::autoclean: 0
 resources:
   license: http://www.perlfoundation.org/artistic_license_2_0
-version: v0.1.10
+version: v0.1.11
