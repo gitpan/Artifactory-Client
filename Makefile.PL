@@ -2,20 +2,20 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
+  'INSTALLDIRS' => 'site',
+  'NAME' => 'Artifactory::Client',
+  'EXE_FILES' => [],
+  'VERSION_FROM' => 'lib/Artifactory/Client.pm',
   'PREREQ_PM' => {
                    'File::Slurp' => 0,
-                   'JSON' => 0,
-                   'Test::More' => 0,
                    'namespace::autoclean' => 0,
-                   'LWP::UserAgent' => 0,
                    'Moose' => '2.0604',
+                   'JSON' => 0,
+                   'WWW::Mechanize' => 0,
                    'URI::Escape' => 0,
-                   'WWW::Mechanize' => 0
+                   'Test::More' => 0,
+                   'LWP::UserAgent' => 0
                  },
-  'EXE_FILES' => [],
-  'INSTALLDIRS' => 'site',
-  'PL_FILES' => {},
-  'NAME' => 'Artifactory::Client',
-  'VERSION_FROM' => 'lib/Artifactory/Client.pm'
+  'PL_FILES' => {}
 )
 ;
