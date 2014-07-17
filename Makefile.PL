@@ -4,19 +4,19 @@ WriteMakefile
 (
   'EXE_FILES' => [],
   'NAME' => 'Artifactory::Client',
-  'PL_FILES' => {},
-  'INSTALLDIRS' => 'site',
   'PREREQ_PM' => {
-                   'namespace::autoclean' => 0,
-                   'WWW::Mechanize' => 0,
-                   'JSON' => 0,
+                   'Test::More' => 0,
                    'URI::Escape' => 0,
-                   'LWP::UserAgent' => 0,
+                   'WWW::Mechanize' => 0,
+                   'Path::Tiny' => 0,
                    'Moose' => '2.0604',
                    'HTTP::Request::StreamingUpload' => 0,
-                   'Path::Tiny' => 0,
-                   'Test::More' => 0
+                   'JSON' => 0,
+                   'LWP::UserAgent' => 0,
+                   'namespace::autoclean' => 0
                  },
+  'PL_FILES' => {},
+  'INSTALLDIRS' => 'site',
   'VERSION_FROM' => 'lib/Artifactory/Client.pm'
 )
 ;
