@@ -3,30 +3,39 @@ abstract: 'Perl client for Artifactory REST API'
 author:
   - 'Satoshi Yagi <satoshi@yahoo-inc.com>'
 build_requires:
-  JSON: 0
-  LWP::UserAgent: 0
-  Test::More: 0
-  WWW::Mechanize: 0
+  JSON: '0'
+  Test::More: '0'
+  WWW::Mechanize: '0'
 configure_requires:
-  Module::Build: 0
+  Module::Build: '0'
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4007, CPAN::Meta::Converter version 2.132140'
+generated_by: 'Module::Build version 0.4206, CPAN::Meta::Converter version 2.142060'
+keywords:
+  - artifactory
 license: artistic_2
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+  version: '1.4'
 name: Artifactory-Client
+no_index:
+  directory:
+    - t_func
 provides:
   Artifactory::Client:
     file: lib/Artifactory/Client.pm
-    version: v0.7.8
+    version: v0.8.0
 requires:
-  HTTP::Request::StreamingUpload: 0
-  LWP::UserAgent: 0
-  Moose: 2.0604
-  Path::Tiny: 0
-  URI::Escape: 0
-  namespace::autoclean: 0
+  HTTP::Request::StreamingUpload: '0'
+  JSON::MaybeXS: '0'
+  LWP::UserAgent: '0'
+  Moose: '2.0604'
+  MooseX::StrictConstructor: '0'
+  Path::Tiny: '0'
+  URI::Escape: '0'
+  namespace::autoclean: '0'
 resources:
+  bugtracker: https://github.com/satoshi/Artifactory-Client/issues
+  homepage: https://github.com/satoshi/Artifactory-Client
   license: http://www.perlfoundation.org/artistic_license_2_0
-version: v0.7.8
+  repository: git://github.com/satoshi/Artifactory-Client.git
+version: v0.8.0

@@ -4,7 +4,10 @@
       "Satoshi Yagi <satoshi@yahoo-inc.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4007, CPAN::Meta::Converter version 2.132140",
+   "generated_by" : "Module::Build version 0.4206",
+   "keywords" : [
+      "artifactory"
+   ],
    "license" : [
       "artistic_2"
    ],
@@ -13,15 +16,12 @@
       "version" : "2"
    },
    "name" : "Artifactory-Client",
+   "no_index" : {
+      "directory" : [
+         "t_func"
+      ]
+   },
    "prereqs" : {
-      "build" : {
-         "requires" : {
-            "JSON" : "0",
-            "LWP::UserAgent" : "0",
-            "Test::More" : "0",
-            "WWW::Mechanize" : "0"
-         }
-      },
       "configure" : {
          "requires" : {
             "Module::Build" : "0"
@@ -30,25 +30,41 @@
       "runtime" : {
          "requires" : {
             "HTTP::Request::StreamingUpload" : "0",
+            "JSON::MaybeXS" : "0",
             "LWP::UserAgent" : "0",
             "Moose" : "2.0604",
+            "MooseX::StrictConstructor" : "0",
             "Path::Tiny" : "0",
             "URI::Escape" : "0",
             "namespace::autoclean" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "JSON" : "0",
+            "Test::More" : "0",
+            "WWW::Mechanize" : "0"
          }
       }
    },
    "provides" : {
       "Artifactory::Client" : {
          "file" : "lib/Artifactory/Client.pm",
-         "version" : "v0.7.8"
+         "version" : "v0.8.0"
       }
    },
    "release_status" : "stable",
    "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/satoshi/Artifactory-Client/issues"
+      },
+      "homepage" : "https://github.com/satoshi/Artifactory-Client",
       "license" : [
          "http://www.perlfoundation.org/artistic_license_2_0"
-      ]
+      ],
+      "repository" : {
+         "url" : "git://github.com/satoshi/Artifactory-Client.git"
+      }
    },
-   "version" : "v0.7.8"
+   "version" : "v0.8.0"
 }
