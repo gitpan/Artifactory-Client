@@ -1,7 +1,7 @@
 {
    "abstract" : "Perl client for Artifactory REST API",
    "author" : [
-      "Satoshi Yagi <satoshi@yahoo-inc.com>"
+      "Satoshi Yagi <satoshi.yagi@yahoo.com>"
    ],
    "dynamic_config" : 1,
    "generated_by" : "Module::Build version 0.4206",
@@ -50,7 +50,7 @@
    "provides" : {
       "Artifactory::Client" : {
          "file" : "lib/Artifactory/Client.pm",
-         "version" : "v0.8.0"
+         "version" : "v0.8.1"
       }
    },
    "release_status" : "stable",
@@ -66,5 +66,5 @@
          "url" : "git://github.com/satoshi/Artifactory-Client.git"
       }
    },
-   "version" : "v0.8.0"
+   "version" : "v0.8.1"
 }
